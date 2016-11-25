@@ -15,4 +15,7 @@ build
 
 node_modules
 
+.auth-dev.js
+.auth-prod.js
+.database-prod.js
 
