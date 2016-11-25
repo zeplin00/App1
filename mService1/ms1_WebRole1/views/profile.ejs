@@ -17,6 +17,7 @@
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
+  <% if (user.local.email) { %>
     <div class="row">
 
         <!-- LOCAL INFORMATION -->
@@ -25,7 +26,6 @@
                 <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p>
-                        <strong>id</strong>: <%= user._id %><br>
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
                     </p>
@@ -34,8 +34,9 @@
         </div>
 
     </div>
+  <% } %>
 
-
+  <% if (user.facebook.token) { %>
     <div class="row">
 
         <!-- FACEBOOK INFORMATION -->
@@ -54,7 +55,9 @@
         </div>
 
     </div>
+  <% } %>
 
+  <% if (user.twitter.token) { %>
     <div class="row">
 
         <!-- TWITTER INFORMATION -->
@@ -73,7 +76,9 @@
         </div>
 
     </div>
+  <% } %>
 
+  <% if (user.google.token) { %>
     <div class="row">
 
         <!-- GOOGLE INFORMATION -->
@@ -92,6 +97,7 @@
         </div>
 
     </div>
+  <% } %>
 
 </div>
 </body>
