@@ -16,6 +16,8 @@ var session      = require('express-session');
 
 var configDB = require('./config/database.js');
 
+var MongoStore = require('connect-mongo')(session);
+
 var httpsOnly = function(req, res, next) {
 
     // This is a hack.
@@ -52,9 +54,12 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch', // session secret
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new MongoStore({
+     url: configDB.sessionUrl
+    }),
+    secret: 'arandommseeedforsigningggcookiessss'
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions

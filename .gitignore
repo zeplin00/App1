@@ -17,5 +17,9 @@ node_modules
 
 .auth-dev.js
 .auth-prod.js
+.auth-checkin.js
+
+.database-dev.js
 .database-prod.js
+.database-checkin.js
 
