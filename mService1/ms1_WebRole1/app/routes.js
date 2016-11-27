@@ -96,6 +96,21 @@ module.exports = function(app, passport) {
                     failureRedirect : '/'
             }));
 
+    // =====================================
+    // LIVE ROUTES =======================
+    // =====================================
+    // send to live to do the authentication
+    // profile gets us their basic information including their name
+    // email gets their emails
+    app.get('/auth/live', passport.authenticate('windowslive', { scope : ['wl.offline_access'] }));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/live/callback',
+            passport.authenticate('windowslive', {
+                    successRedirect : '/profile',
+                    failureRedirect : '/'
+            }));
+
 
     // =====================================
     // LOGOUT ==============================

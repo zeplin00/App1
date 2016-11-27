@@ -99,6 +99,27 @@
     </div>
   <% } %>
 
+  <% if (user.live.token) { %>
+    <div class="row">
+
+        <!-- LIVE INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-primary"><span class="fa fa-windows"></span> Live</h3>
+
+                    <p>
+                        <strong>id</strong>: <%= user.live.id %><br>
+                        <strong>token</strong>: <%= user.live.token %><br>
+                        <strong>name</strong>: <%= user.live.name %>
+                    </p>
+
+            </div>
+        </div>
+
+    </div>
+  <% } %>
+
+
 </div>
 </body>
 </html>

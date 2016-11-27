@@ -5,6 +5,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy  = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var WindowsLiveStrategy = require('passport-windowslive').Strategy;
 
 // load up the user model
 var User            = require('../app/models/user');
@@ -259,6 +260,54 @@ module.exports = function(passport) {
                     newUser.google.token = token;
                     newUser.google.name  = profile.displayName;
                     newUser.google.email = profile.emails[0].value; // pull the first email
+
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+            });
+        });
+
+    }));
+
+
+    // =========================================================================
+    // LIVE ==================================================================
+    // =========================================================================
+    passport.use(new WindowsLiveStrategy({
+
+        clientID        : configAuth.liveAuth.clientID,
+        clientSecret    : configAuth.liveAuth.clientSecret,
+        callbackURL     : configAuth.liveAuth.callbackURL
+
+    },
+    function(accessToken, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Live
+        process.nextTick(function() {
+
+            // try to find the user based on their live id
+            User.findOne({ 'live.id' : profile.id }, function(err, user) {
+                if (err)
+                    return done(err);
+
+                if (user) {
+
+                    // if a user is found, log them in
+                    return done(null, user);
+                } else {
+                    // if the user isnt in our database, create a new user
+                    var newUser          = new User();
+
+                    // set all of the relevant information
+                    newUser.live.id    = profile.id;
+                    newUser.live.token = accessToken;
+                    newUser.live.name  = profile.displayName;
+                    // newUser.live.email = profile.emails[0].value; // pull the first email
 
                     // save the user
                     newUser.save(function(err) {
